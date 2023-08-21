@@ -20,6 +20,25 @@ class RatingSerializers(serializers.ModelSerializer):
         
 
 class CourseSerializer(serializers.ModelSerializer):
+    # Nested Relationship
+    # ratings = RatingSerializers(
+    #     many=True, 
+    #     read_only=True
+    # )
+    
+    # Primary Key Related Field
+    ratings = serializers.PrimaryKeyRelatedField(
+        many=True,
+        read_only=True
+    )
+    
+    #HyperLinked Related Field (recommended by RESTFULL design)
+    # ratings = serializers.HyperlinkedRelatedField(
+    #     many=True, 
+    #     read_only=True, 
+    #     view_name='rating-detail'
+    # )
+    
     
     class Meta:
         model = Course
@@ -28,5 +47,6 @@ class CourseSerializer(serializers.ModelSerializer):
             'title',
             'url',
             'published',
-            'active'
+            'active',
+            'ratings'
         )

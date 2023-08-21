@@ -4,6 +4,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from rest_framework import mixins
 
 from .models import Course, Rating
 from .serializers import CourseSerializer, RatingSerializers
@@ -70,7 +71,22 @@ class CourseViewSet(viewsets.ModelViewSet):
         serializer = RatingSerializers(course.ratings.all(), many=True)
         return Response(serializer.data)
     
-    
+
+"""
 class RatingViewSet(viewsets.ModelViewSet):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializers
+"""
+
+# IMPLEMENT JUST YOUR NECESSARY CRUD FUNCTIONS 
+class RatingViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    # mixins.DestroyModelMixin,
+    viewsets.GenericViewSet
+    ):
+    
     queryset = Rating.objects.all()
     serializer_class = RatingSerializers
