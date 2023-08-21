@@ -140,6 +140,6 @@ REST_FRAMEWORK = {
     ],
 
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framwork.authentication.SessionAuthentication'
+        'rest_framework.authentication.SessionAuthentication'
     ]
 }
