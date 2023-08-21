@@ -67,6 +67,14 @@ class CourseViewSet(viewsets.ModelViewSet):
     
     @action(detail=True, methods=['get'])
     def ratings(self, request, pk=None):
+        self.pagination_class.page_size = 2
+        ratings = Rating.objects.filter(course_id=pk)
+        page = self.paginate_queryset(ratings)
+
+        if page is not None:
+            serializer = RatingSerializers(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
         course = self.get_object()
         serializer = RatingSerializers(course.ratings.all(), many=True)
         return Response(serializer.data)
