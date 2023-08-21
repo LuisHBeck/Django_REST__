@@ -1,44 +1,28 @@
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import generics
 
 from .models import Course, Rating
 from .serializers import CourseSerializer, RatingSerializers
 
-
-class CourseAPIView(APIView):
-    """
-    API of Beck's recent courses 
-    """
-
-    def get(self, request):
-        print(request.user)
-
-        courses = Course.objects.all()
-        serializer = CourseSerializer(courses, many=True)
-        return Response(serializer.data)
+# List all courses and create new one
+class CoursesAPIView(generics.ListCreateAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
     
-    def post(self, request):
-        serializer = CourseSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
     
-
-class RatingAPIView(APIView):
-    """
-    API of Beck's recent courses rating
-    """
-
-    def get(self, request):
-        print(request.user)
-
-        ratings = Rating.objects.all()
-        serializer = RatingSerializers(ratings, many=True)
-        return Response(serializer.data)
+# List, Update and Delete a specific course 
+class CourseAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Course.objects.all()
+    serializer_class = CourseSerializer
     
-    def post(self, request):
-        serializer = RatingSerializers(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+# List all ratings and create new one 
+class RatingsAPIView(generics.ListCreateAPIView):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializers
+    
+    
+# List, Update and Delete a specific rating
+class RatingAPIView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Rating.objects.all()
+    serializer_class = RatingSerializers
+    
