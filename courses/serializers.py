@@ -1,4 +1,6 @@
 from rest_framework import serializers
+from django.db.models import Avg
+
 from .models import Course, Rating
 
 
@@ -19,7 +21,7 @@ class RatingSerializers(serializers.ModelSerializer):
         )
     
     def validate_rating(self, value):
-        if value in range(0,6):
+        if value > 0 and value <=5:
             return value
         return serializers.ValidationError('Rating needs to be between 0 and 5')
     
@@ -32,19 +34,20 @@ class CourseSerializer(serializers.ModelSerializer):
     # )
     
     # Primary Key Related Field
-    ratings = serializers.PrimaryKeyRelatedField(
-        many=True,
-        read_only=True
-    )
-    
-    
-    
-    #HyperLinked Related Field (recommended by RESTFULL design)
-    # ratings = serializers.HyperlinkedRelatedField(
-    #     many=True, 
-    #     read_only=True, 
-    #     view_name='rating-detail'
+    # ratings = serializers.PrimaryKeyRelatedField(
+    #     many=True,
+    #     read_only=True
     # )
+    
+
+    #HyperLinked Related Field (recommended by RESTFULL design)
+    ratings = serializers.HyperlinkedRelatedField(
+        many=True, 
+        read_only=True, 
+        view_name='rating-detail'
+    )
+
+    ratings_average = serializers.SerializerMethodField()
     
     
     class Meta:
@@ -55,5 +58,13 @@ class CourseSerializer(serializers.ModelSerializer):
             'url',
             'published',
             'active',
-            'ratings'
+            'ratings',
+            'ratings_average'
         )
+
+    def get_ratings_average(self, obj):
+        average = obj.ratings.aggregate(Avg('rating')).get('rating__avg')
+
+        if average is None:
+            return 0
+        return round(average*2)/2
