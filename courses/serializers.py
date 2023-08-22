@@ -17,7 +17,12 @@ class RatingSerializers(serializers.ModelSerializer):
             'comment', 
             'rating'
         )
-        
+    
+    def validate_rating(self, value):
+        if value in range(0,6):
+            return value
+        return serializers.ValidationError('Rating needs to be between 0 and 5')
+    
 
 class CourseSerializer(serializers.ModelSerializer):
     # Nested Relationship
@@ -31,6 +36,8 @@ class CourseSerializer(serializers.ModelSerializer):
         many=True,
         read_only=True
     )
+    
+    
     
     #HyperLinked Related Field (recommended by RESTFULL design)
     # ratings = serializers.HyperlinkedRelatedField(
