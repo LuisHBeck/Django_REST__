@@ -22,10 +22,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # SECRET_KEY = 'django-insecure-p6i(oe-m8=mcy=!bun17=12#mej)*^59mf4e1uufx%og-1gjz5'
-SECRET_KEY = os.environ.get('SECRET_KEY')
+# SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = 'django-insecure-p6i(oe-m8=mcy=!bun17=12#mej)*^59mf4e1uufx%og-1gjz5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -33,6 +34,9 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    # BEALTIFUL ADMIN
+    'jazzmin',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -164,6 +168,51 @@ REST_FRAMEWORK = {
     #     'user': '10/minute'
     # }
 }
+
+
+JAZZMIN_SETTINGS = {
+    "site_title": "Beck REST",
+    "welcome_sign": "Welcome back",
+    "site_header": "BECK",
+    "site_brand": " BECK ",
+    "copyright": "www.beck.com",
+    # "site_logo": "lebron.png",
+}
+
+JAZZMIN_UI_TWEAKS = { 
+    "navbar_small_text": False, 
+    "footer_small_text": False, 
+    "body_small_text": False, 
+    "brand_small_text": False, 
+    "brand_colour": "navbar-success", 
+    "accent": "accent-teal", 
+    "navbar": "navbar-dark", 
+    "no_navbar_border": False, 
+    "navbar_fixed": False, 
+    "layout_boxed": False, 
+    "footer_fixed": False, 
+    "sidebar_fixed": False, 
+    "sidebar": "sidebar-dark-info", 
+    "sidebar_nav_small_text": False, 
+    "sidebar_disable_expand": False, 
+    "sidebar_nav_child_indent": False, 
+    "sidebar_nav_compact_style": False, 
+    "sidebar_nav_legacy_style": False, 
+    "sidebar_nav_flat_style": False, 
+    # "theme": "cyborg", 
+    "theme": "solar", 
+    "dark_mode_theme": 'darkly', 
+    "button_classes": { 
+        "primary": "btn-primary", 
+        "secondary": "btn-secondary", 
+        "info": "btn-info", 
+        "warning": "btn-warning", 
+        "danger": "btn-danger", 
+        "success": "btn-success", 
+    }, 
+}
+
+
 
 # HEROKU CONFIGS
 django_heroku.settings(locals())
